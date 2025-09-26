@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contagem de Pessoas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121830;
+      --text: #e8eefc;
+      --muted: #9fb2e5;
+      --accent: #6aa1ff;
+      --accent-2: #22d3ee;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial; background: radial-gradient(1200px 600px at 20% -20%, #1b254d55, transparent),
+      radial-gradient(1000px 500px at 120% 120%, #00ffd51a, transparent), var(--bg); color: var(--text);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .container {
+      width: 100%; max-width: 1100px; padding: 24px;
+    }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand .dot { width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 12px #6aa1ff88; }
+    .brand h1 { font-size: 18px; margin: 0; letter-spacing: 0.5px; font-weight: 800; text-transform: uppercase; color: #cfe0ff; }
+
+    .grid { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+
+    .card { background: linear-gradient(180deg, #141b36 0%, #10162d 100%); border: 1px solid #2a366b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+    .card-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #263266; }
+    .card-header h2 { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 0.4px; color: #b9c9ff; }
+    .badge { padding: 4px 8px; border-radius: 999px; background: #1a2449; border: 1px solid #2d3b79; color: #a9baf0; font-size: 12px; }
+
+    .video-wrap { position: relative; aspect-ratio: 16/9; background: #0d1228; display: flex; align-items: center; justify-content: center; }
+    .video-wrap img { width: 100%; height: 100%; object-fit: contain; }
+
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 16px; }
+    .stat { background: #0f1530; border: 1px solid #223064; border-radius: 12px; padding: 12px; }
+    .stat .label { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+    .stat .value { font-size: 28px; font-weight: 800; letter-spacing: 1px; }
+
+    .controls { padding: 14px 16px; display: flex; align-items: center; gap: 10px; border-top: 1px solid #263266; }
+    .controls input, .controls select { background: #0c1228; color: var(--text); border: 1px solid #223064; border-radius: 10px; padding: 10px 12px; }
+    .controls input { width: 110px; }
+    .controls button { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #05102b; font-weight: 800; padding: 10px 14px; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 16px #6aa1ff44; }
+
+    footer { text-align: center; margin-top: 12px; color: #8da6e6; font-size: 12px; }
+    .hint { color: #7f95d6; font-size: 12px; padding: 0 16px 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="dot"></div>
+        <h1>Contagem de Pessoas</h1>
+      </div>
+      <span class="badge" id="status">Conectando…</span>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header">
+          <h2>Stream de Vídeo</h2>
+          <span class="badge">/video</span>
+        </div>
+        <div class="video-wrap">
+          <img id="stream" alt="stream" />
+        </div>
+        <div class="hint">Se a imagem não carregar, verifique permissões da câmera, backends (msmf/dshow) e se o servidor está ativo.</div>
+        <div class="stats">
+          <div class="stat">
+            <div class="label">Pessoas</div>
+            <div class="value" id="count">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">FPS</div>
+            <div class="value" id="fps">0.0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Configurações</h2>
+          <span class="badge">Tempo real</span>
+        </div>
+        <div class="controls">
+          <label for="conf">Conf.</label>
+          <input id="conf" type="number" min="0" max="1" step="0.01" value="0.25" />
+          <button id="apply">Aplicar</button>
+        </div>
+        <div class="controls">
+          <button id="refresh">Reiniciar stream</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <small>Servidor FastAPI — acesse este endereço a partir de outros dispositivos na mesma rede.</small>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
